@@ -1,25 +1,48 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
-const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
-  const pageNumbers = []
+const Pagination = ({ paginate, currentPage, hasNext, hasPrev, gotoPage, maxPage }) => {
+    return (
+        <Fragment>
+            <div className='d-flex align-items-center justify-content-center flex-column'>
+                <nav>
+                    <ul className='pagination'>
+                        {currentPage !== 1 && <li className='page-item mx-2'>
+                            <a onClick={() => paginate(1)} href='!#' className='page-link'>
+                                Go To Start
+                            </a>
+                        </li>}
 
-  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
-    pageNumbers.push(i)
-  }
+                        {hasPrev && <li className='page-item'>
+                            <a onClick={() => paginate(+currentPage - 1)} href='!#' className='page-link'>
+                                Prev
+                            </a>
+                        </li>}
 
-  return (
-    <nav>
-      <ul className='pagination'>
-        {pageNumbers.map(number => (
-          <li key={number} className='page-item'>
-            <a onClick={() => paginate(number)} href='!#' className='page-link'>
-              {number}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  )
+                        <li className='page-item mx-2'>
+                            <a onClick={() => paginate(+currentPage)} href='!#' className='page-link'>
+                                {currentPage}
+                            </a>
+                        </li>
+
+                        {hasNext && <li className='page-item'>
+                            <a onClick={() => paginate(+currentPage + 1)} href='!#' className='page-link'>
+                                Next
+                            </a>
+                        </li>}
+
+                        {hasNext && <li className='page-item mx-2'>
+                            <a onClick={() => paginate(maxPage)} href='!#' className='page-link'>
+                                Go To End
+                            </a>
+                        </li>}
+                    </ul>
+                </nav>
+                
+                <span>Go to Page <input type='number' min={1} max={maxPage} onChange={e => gotoPage(e.target.value)} /></span>
+            </div>
+        </Fragment>
+
+    )
 }
 
 export default Pagination
